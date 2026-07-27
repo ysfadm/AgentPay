@@ -27,6 +27,41 @@ with guardrails that a human grants once and can revoke at any time.
 - **Markdown slides (backup / copy-paste):** [`docs/pitch-deck-slides.md`](docs/pitch-deck-slides.md)
 - **Demo video (Google Drive):** https://drive.google.com/file/d/1t727Kby7cnj1AqYNch3ZH16nKbohN0wu/view?usp=sharing
 
+### Screenshots
+
+| Mobile responsive UI                         | CI/CD pipeline running               |
+| -------------------------------------------- | ------------------------------------ |
+| ![Mobile UI](docs/screenshots/mobile-ui.png) | ![CI/CD](docs/screenshots/ci-cd.png) |
+
+### Test output (frontend + contracts)
+
+```
+> agentpay@0.1.0 test
+> vitest run
+
+ RUN  v4.1.8 C:/Users/yusuf/Desktop/AgentPay
+
+ Test Files  6 passed (6)
+      Tests  20 passed (20)
+   Start at  17:10:47
+   Duration  1.61s (transform 552ms, setup 0ms, import 2.65s, tests 61ms, environment 1ms)
+```
+
+```
+running 1 test
+test test::register_and_reputation ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+running 2 tests
+test test::spend_over_limit_fails ... ok
+test test::grant_and_spend_within_limit ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+running 1 test
+test test::placeholder ... ok
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
 ---
 
 ## Why this matters
