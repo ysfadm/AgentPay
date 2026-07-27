@@ -65,6 +65,9 @@ is expired, the whole transaction reverts — no payment, no partial state.
 A real autonomous purchase moved **2 USDC** from a buyer agent to a provider agent
 (buyer balance 100 → 98), settled by `Marketplace.purchase`, with reputation recorded on-chain.
 
+- **Transaction hash:** `b5395435a81e047e9f3f5be91e52cc8af596f3604bb52ad9b5032cd88e3d4721`
+- **Explorer link:** https://stellar.expert/explorer/testnet/tx/b5395435a81e047e9f3f5be91e52cc8af596f3604bb52ad9b5032cd88e3d4721
+
 ---
 
 ## Smart contracts (`contracts/`)
