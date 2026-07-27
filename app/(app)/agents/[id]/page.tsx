@@ -306,12 +306,15 @@ export default function AgentDetailPage({
       ? Math.min(100, (delegation.spentToday / delegation.dailyLimit) * 100)
       : 0;
   const recentJobs = [...jobs]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
     .slice(0, 3);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+      <Card className="border-primary/20 bg-linear-to-br from-primary/5 to-transparent">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl">Agent overview</CardTitle>
           <CardDescription className="text-base sm:text-lg">
@@ -320,15 +323,20 @@ export default function AgentDetailPage({
         </CardHeader>
         <CardContent className="grid gap-6 lg:grid-cols-3">
           <div className="rounded-xl border border-border bg-background/50 p-5">
-            <p className="text-sm font-medium text-muted-foreground sm:text-base">Daily budget</p>
+            <p className="text-sm font-medium text-muted-foreground sm:text-base">
+              Daily budget
+            </p>
             {delegation && delegation.status === "active" ? (
               <>
                 <p className="mt-2 text-2xl font-bold sm:text-3xl">
                   {formatUsdc(remaining)}{" "}
-                  <span className="text-base font-normal text-muted-foreground">remaining</span>
+                  <span className="text-base font-normal text-muted-foreground">
+                    remaining
+                  </span>
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-                  {formatUsdc(delegation.spentToday)} spent of {formatUsdc(delegation.dailyLimit)}
+                  {formatUsdc(delegation.spentToday)} spent of{" "}
+                  {formatUsdc(delegation.dailyLimit)}
                 </p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
                   <div
@@ -341,12 +349,16 @@ export default function AgentDetailPage({
                 </p>
               </>
             ) : (
-              <p className="mt-2 text-lg text-muted-foreground">No active delegation</p>
+              <p className="mt-2 text-lg text-muted-foreground">
+                No active delegation
+              </p>
             )}
           </div>
 
           <div className="rounded-xl border border-border bg-background/50 p-5">
-            <p className="text-sm font-medium text-muted-foreground sm:text-base">Wallet & stats</p>
+            <p className="text-sm font-medium text-muted-foreground sm:text-base">
+              Wallet & stats
+            </p>
             <p className="mt-2 flex items-center gap-2 text-base sm:text-lg">
               <Wallet className="size-4" />
               {shortAddr(agent.walletAddress, 8)}
@@ -354,7 +366,10 @@ export default function AgentDetailPage({
             <div className="mt-3 space-y-1 text-sm sm:text-base">
               {balance !== null && (
                 <p>
-                  Balance: <span className="font-semibold text-accent">{formatUsdc(balance)}</span>
+                  Balance:{" "}
+                  <span className="font-semibold text-accent">
+                    {formatUsdc(balance)}
+                  </span>
                 </p>
               )}
               <p>Jobs completed: {agent.jobsCompleted}</p>
@@ -364,9 +379,13 @@ export default function AgentDetailPage({
           </div>
 
           <div className="rounded-xl border border-border bg-background/50 p-5">
-            <p className="text-sm font-medium text-muted-foreground sm:text-base">Recent transactions</p>
+            <p className="text-sm font-medium text-muted-foreground sm:text-base">
+              Recent transactions
+            </p>
             {recentJobs.length === 0 ? (
-              <p className="mt-2 text-base text-muted-foreground">No jobs yet — run the agent to pay.</p>
+              <p className="mt-2 text-base text-muted-foreground">
+                No jobs yet — run the agent to pay.
+              </p>
             ) : (
               <ul className="mt-3 space-y-2">
                 {recentJobs.map((j) => (
@@ -388,239 +407,246 @@ export default function AgentDetailPage({
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-6 lg:col-span-2">
-        <Card>
-          <CardHeader className="flex-row items-center gap-4">
-            <AgentAvatar
-              seed={agent.avatarSeed}
-              name={agent.name}
-              className="size-12"
-            />
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <CardTitle>{agent.name}</CardTitle>
-                {agent.source === "openclaw" && (
-                  <Badge variant="outline">OpenClaw</Badge>
-                )}
-                {delegation?.status === "active" && delegation.onchainLive && (
-                  <Badge className="border-primary/30 bg-primary/10 text-primary">
-                    On-chain: ✓ delegation live
-                  </Badge>
-                )}
-                {delegation?.status === "active" && !delegation.onchainLive && (
-                  <Badge variant="muted">Delegation: local demo</Badge>
+          <Card>
+            <CardHeader className="flex-row items-center gap-4">
+              <AgentAvatar
+                seed={agent.avatarSeed}
+                name={agent.name}
+                className="size-12"
+              />
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <CardTitle>{agent.name}</CardTitle>
+                  {agent.source === "openclaw" && (
+                    <Badge variant="outline">OpenClaw</Badge>
+                  )}
+                  {delegation?.status === "active" &&
+                    delegation.onchainLive && (
+                      <Badge className="border-primary/30 bg-primary/10 text-primary">
+                        On-chain: ✓ delegation live
+                      </Badge>
+                    )}
+                  {delegation?.status === "active" &&
+                    !delegation.onchainLive && (
+                      <Badge variant="muted">Delegation: local demo</Badge>
+                    )}
+                </div>
+                <CardDescription>{agent.role}</CardDescription>
+              </div>
+              <ReputationBadge score={agent.reputationScore} />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={remove}
+                disabled={busy}
+                aria-label="Delete agent"
+                title="Delete agent"
+              >
+                <Trash2 className="size-4 text-muted-foreground" />
+              </Button>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1.5">
+                  <Wallet className="size-4" />
+                  {shortAddr(agent.walletAddress, 6)}
+                </span>
+                <span>Jobs: {agent.jobsCompleted}</span>
+                <span>Successful payments: {agent.successfulPayments}</span>
+                {balance !== null && (
+                  <span className="text-accent">
+                    Balance: {formatUsdc(balance)}
+                  </span>
                 )}
               </div>
-              <CardDescription>{agent.role}</CardDescription>
-            </div>
-            <ReputationBadge score={agent.reputationScore} />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={remove}
-              disabled={busy}
-              aria-label="Delete agent"
-              title="Delete agent"
-            >
-              <Trash2 className="size-4 text-muted-foreground" />
-            </Button>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <Wallet className="size-4" />
-                {shortAddr(agent.walletAddress, 6)}
-              </span>
-              <span>Jobs: {agent.jobsCompleted}</span>
-              <span>Successful payments: {agent.successfulPayments}</span>
-              {balance !== null && (
-                <span className="text-accent">
-                  Balance: {formatUsdc(balance)}
-                </span>
+              {onchainRep && (
+                <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs">
+                  <ShieldCheck className="size-3.5 text-primary" />
+                  <span className="font-medium">On-chain reputation</span>
+                  <span className="text-muted-foreground">
+                    {onchainRep.jobsCompleted} jobs
+                  </span>
+                  <span className="text-muted-foreground">
+                    {onchainRep.successfulPayments} paid
+                  </span>
+                  <span className="text-accent">
+                    {(onchainRep.successRateBps / 100).toFixed(0)}% success
+                  </span>
+                  <span className="text-muted-foreground">
+                    (read from AgentRegistry)
+                  </span>
+                </div>
               )}
-            </div>
-            {onchainRep && (
-              <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs">
-                <ShieldCheck className="size-3.5 text-primary" />
-                <span className="font-medium">On-chain reputation</span>
-                <span className="text-muted-foreground">
-                  {onchainRep.jobsCompleted} jobs
-                </span>
-                <span className="text-muted-foreground">
-                  {onchainRep.successfulPayments} paid
-                </span>
-                <span className="text-accent">
-                  {(onchainRep.successRateBps / 100).toFixed(0)}% success
-                </span>
-                <span className="text-muted-foreground">
-                  (read from AgentRegistry)
-                </span>
-              </div>
-            )}
-            {live && !agent.isProvider && (
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={activate}
-                  disabled={busy}
-                >
-                  Activate on-chain (fund + 100 USDC)
-                </Button>
-                <span className="text-xs text-muted-foreground">
-                  Required once before the agent can pay.
-                </span>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {canList && (
-          <SellAgentForm
-            agentId={agent.id}
-            agentName={agent.name}
-            agentRole={agent.role}
-            ownerAddress={wallet.address}
-            listings={listings}
-            onListed={load}
-          />
-        )}
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <ShieldCheck className="size-5 text-primary" /> Spending
-              delegation
-            </CardTitle>
-            <CardDescription>
-              Grant a capped, expiring allowance — enforced on-chain by the
-              Delegation Manager.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            {delegation && delegation.status === "active" ? (
-              <div className="flex flex-wrap items-center gap-3">
-                <Badge>Active</Badge>
-                <span className="text-sm">
-                  Limit {formatUsdc(delegation.dailyLimit)}/day
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  Remaining {formatUsdc(remaining)}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  Expires {new Date(delegation.expiresAt).toLocaleString()}
-                </span>
-                {delegation.onchainTxHash && (
-                  <ExplorerTxLink hash={delegation.onchainTxHash} className="text-sm" />
-                )}
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={revokeDelegation}
-                  disabled={busy}
-                  className="ml-auto"
-                >
-                  <ShieldOff className="size-4" /> Revoke
-                </Button>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No active delegation.
-              </p>
-            )}
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <div className="flex-1">
-                <label className="mb-1 block text-xs text-muted-foreground">
-                  Daily limit (USDC)
-                </label>
-                <Input
-                  type="number"
-                  value={limit}
-                  onChange={(e) => setLimit(e.target.value)}
-                />
-              </div>
-              <div className="flex-1">
-                <label className="mb-1 block text-xs text-muted-foreground">
-                  Expiry (hours)
-                </label>
-                <Input
-                  type="number"
-                  value={hours}
-                  onChange={(e) => setHours(e.target.value)}
-                />
-              </div>
-              <div className="flex items-end">
-                <Button onClick={grant} disabled={busy}>
-                  <Fingerprint className="size-4" />{" "}
-                  {wallet.address ? "Approve with Freighter" : "Approve (demo)"}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Play className="size-5 text-primary" /> Run autonomously
-            </CardTitle>
-            <CardDescription>
-              The agent discovers a service in the marketplace and pays for it
-              on its own — within the delegated limit.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            <Input
-              value={goal}
-              onChange={(e) => setGoal(e.target.value)}
-              placeholder="Agent goal"
-            />
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Button
-                onClick={run}
-                disabled={busy || !delegation}
-                className="flex-1 text-base"
-                data-tour="run-once"
-              >
-                <Play className="size-4" /> Run once
-              </Button>
-              <Button
-                variant="outline"
-                onClick={runUntilBlocked}
-                disabled={busy || !delegation}
-                className="flex-1"
-              >
-                <Repeat className="size-4" /> Run until budget runs out
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {message && <p className="text-sm text-accent">{message}</p>}
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Jobs</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {jobs.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No jobs yet.</p>
-            ) : (
-              <ul className="flex flex-col gap-2 text-sm">
-                {jobs.map((j) => (
-                  <li
-                    key={j.id}
-                    className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2"
+              {live && !agent.isProvider && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={activate}
+                    disabled={busy}
                   >
-                    <span>
-                      {formatUsdc(j.amount)} · {j.status}
-                    </span>
-                    <ExplorerTxLink hash={j.stellarTxHash} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
+                    Activate on-chain (fund + 100 USDC)
+                  </Button>
+                  <span className="text-xs text-muted-foreground">
+                    Required once before the agent can pay.
+                  </span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {canList && (
+            <SellAgentForm
+              agentId={agent.id}
+              agentName={agent.name}
+              agentRole={agent.role}
+              ownerAddress={wallet.address}
+              listings={listings}
+              onListed={load}
+            />
+          )}
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <ShieldCheck className="size-5 text-primary" /> Spending
+                delegation
+              </CardTitle>
+              <CardDescription>
+                Grant a capped, expiring allowance — enforced on-chain by the
+                Delegation Manager.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              {delegation && delegation.status === "active" ? (
+                <div className="flex flex-wrap items-center gap-3">
+                  <Badge>Active</Badge>
+                  <span className="text-sm">
+                    Limit {formatUsdc(delegation.dailyLimit)}/day
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    Remaining {formatUsdc(remaining)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    Expires {new Date(delegation.expiresAt).toLocaleString()}
+                  </span>
+                  {delegation.onchainTxHash && (
+                    <ExplorerTxLink
+                      hash={delegation.onchainTxHash}
+                      className="text-sm"
+                    />
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={revokeDelegation}
+                    disabled={busy}
+                    className="ml-auto"
+                  >
+                    <ShieldOff className="size-4" /> Revoke
+                  </Button>
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  No active delegation.
+                </p>
+              )}
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <div className="flex-1">
+                  <label className="mb-1 block text-xs text-muted-foreground">
+                    Daily limit (USDC)
+                  </label>
+                  <Input
+                    type="number"
+                    value={limit}
+                    onChange={(e) => setLimit(e.target.value)}
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="mb-1 block text-xs text-muted-foreground">
+                    Expiry (hours)
+                  </label>
+                  <Input
+                    type="number"
+                    value={hours}
+                    onChange={(e) => setHours(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-end">
+                  <Button onClick={grant} disabled={busy}>
+                    <Fingerprint className="size-4" />{" "}
+                    {wallet.address
+                      ? "Approve with Freighter"
+                      : "Approve (demo)"}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Play className="size-5 text-primary" /> Run autonomously
+              </CardTitle>
+              <CardDescription>
+                The agent discovers a service in the marketplace and pays for it
+                on its own — within the delegated limit.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              <Input
+                value={goal}
+                onChange={(e) => setGoal(e.target.value)}
+                placeholder="Agent goal"
+              />
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <Button
+                  onClick={run}
+                  disabled={busy || !delegation}
+                  className="flex-1 text-base"
+                  data-tour="run-once"
+                >
+                  <Play className="size-4" /> Run once
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={runUntilBlocked}
+                  disabled={busy || !delegation}
+                  className="flex-1"
+                >
+                  <Repeat className="size-4" /> Run until budget runs out
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {message && <p className="text-sm text-accent">{message}</p>}
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Jobs</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {jobs.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No jobs yet.</p>
+              ) : (
+                <ul className="flex flex-col gap-2 text-sm">
+                  {jobs.map((j) => (
+                    <li
+                      key={j.id}
+                      className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2"
+                    >
+                      <span>
+                        {formatUsdc(j.amount)} · {j.status}
+                      </span>
+                      <ExplorerTxLink hash={j.stellarTxHash} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         <div>

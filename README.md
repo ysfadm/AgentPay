@@ -10,12 +10,16 @@ with guardrails that a human grants once and can revoke at any time.
 
 ### Testnet deployments (Stellar Expert)
 
-| Contract | Testnet ID |
-|----------|------------|
-| Agent Registry | `CBNPT7XGHQD75U7B2O6OSVYS4DNTUR3NJSWCEKPNOH5HDMER3DW4KBYI` |
+| Contract           | Testnet ID                                                 |
+| ------------------ | ---------------------------------------------------------- |
+| Agent Registry     | `CBNPT7XGHQD75U7B2O6OSVYS4DNTUR3NJSWCEKPNOH5HDMER3DW4KBYI` |
 | Delegation Manager | `CDFYTLZQ54OWK3CZT4SWCRCZXPZ7VHUY5V2DISRCQYZBXV5MZQCU2WST` |
-| Marketplace | `CBKJXR23EMLGCONODKG4W3GHVLMZ2UN3V5WTJ2SHA6LYY5F7T2LQTJEF` |
-| USDC (demo SAC) | `CALFVMEZVOTFQEVDMHI23ZHT5JNR3SF4BR5RMRBN6M4JT2SXEVIBMMKL` |
+| Marketplace        | `CBKJXR23EMLGCONODKG4W3GHVLMZ2UN3V5WTJ2SHA6LYY5F7T2LQTJEF` |
+| USDC (demo SAC)    | `CALFVMEZVOTFQEVDMHI23ZHT5JNR3SF4BR5RMRBN6M4JT2SXEVIBMMKL` |
+
+### Live demo
+
+- **Live app (Vercel):** https://agent-pay-lilac.vercel.app
 
 ### Pitch deck & demo
 
