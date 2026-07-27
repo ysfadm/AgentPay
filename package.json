@@ -1,0 +1,41 @@
+{
+  "name": "agentpay",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Payments for Autonomous Agents — Freighter-signed delegated spending and agent-to-agent USDC payments on Stellar.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run",
+    "demo:warmup": "node scripts/warmup.mjs",
+    "demo:seed": "node scripts/seed-demo-video.mjs",
+    "contracts:build": "cd contracts && stellar contract build",
+    "contracts:test": "cd contracts && cargo test",
+    "deploy:contracts": "bash scripts/deploy-contracts.sh"
+  },
+  "dependencies": {
+    "@stellar/freighter-api": "^6.0.1",
+    "@stellar/stellar-sdk": "^15.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.469.0",
+    "next": "^15.1.0",
+    "openai": "^4.77.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^4.1.8"
+  }
+}
