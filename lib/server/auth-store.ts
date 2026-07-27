@@ -16,18 +16,35 @@ interface AuthState {
   users: Record<string, StoredUser>;
 }
 
+// In-memory fallback so auth still works within a warm process/instance even
+// when the filesystem is read-only (e.g. serverless platforms like Vercel).
+let memoryState: AuthState | null = null;
+
 function readState(): AuthState {
   try {
-    if (!fs.existsSync(FILE)) return { users: {} };
-    return JSON.parse(fs.readFileSync(FILE, "utf8"));
-  } catch {
-    return { users: {} };
+    if (fs.existsSync(FILE)) {
+      return JSON.parse(fs.readFileSync(FILE, "utf8"));
+    }
+  } catch (e) {
+    console.warn(
+      "[auth-store] read failed, using in-memory state:",
+      (e as Error).message,
+    );
   }
+  return memoryState ?? { users: {} };
 }
 
 function writeState(state: AuthState): void {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  fs.writeFileSync(FILE, JSON.stringify(state, null, 2));
+  memoryState = state;
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(FILE, JSON.stringify(state, null, 2));
+  } catch (e) {
+    console.warn(
+      "[auth-store] write failed, keeping in-memory only:",
+      (e as Error).message,
+    );
+  }
 }
 
 export function getOrCreateUser(username: string): StoredUser {
